@@ -1,0 +1,80 @@
+# General
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.iml
+*.ipr
+*.iws
+*.swp
+*~
+
+# Maven and Gradle
+target/
+build/
+out/
+
+# Logs
+logs/
+*.pid
+*.gz
+
+# IntelliJ IDEA specific
+.idea/
+.idea_modules/
+*.classpath
+*.project
+*.settings/
+.idea/workspace.xml
+.idea/libraries/
+.idea/modules.xml
+.idea/.name
+.idea/misc.xml
+.idea/modules/
+.idea/sqlDataSources.xml
+.idea/datasources.xml
+.idea/dictionaries/
+.idea/vcs.xml
+.idea/httpRequests/
+*.sublime-workspace
+*.sublime-project
+
+# IDE auto-generated files
+.DS_Store
+Thumbs.db
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# OS specific
+*.swo
+*.bak
+
+# Lombok generated
+generated/
+
+# Spring Boot specific
+**/target/
+**/out/
+**/build/
+
+# Temp files
+*.tmp
+*.temp
+
+# Compiled files
+*.dll
+*.exe
+*.so
+
+# Coverage reports
+*.lcov
+coverage/
+.coverage/
+
+# Optional: Exclude database files
+*.db
+*.sqlite
