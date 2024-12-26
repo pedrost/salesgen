@@ -32,61 +32,6 @@ public class Presentation {
     }
 }
 
-public interface IStartupPptxRequest {
-    String getCompanyName();
-    String getCompanyEmail();
-    String getCompanyPhone();
-    String getCompanyAddress();
-
-    String getStartupName();
-    String getStartupWebsite();
-
-    List<Problem> getProblems();
-    List<Feature> getFeatures();
-    List<Graph> getGraphs();
-
-    String getIntroduction();
-    List<TeamMember> getTeam();
-}
-
-public class Problem {
-    String name;
-    String description;
-
-    // Constructor and getters
-    public Problem(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-}
-
-public class Feature {
-    String name;
-    String description;
-
-    // Constructor and getters
-    public Feature(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-}
-
 class Graph {
     String name;
     List<Double> x;
@@ -112,27 +57,3 @@ class Graph {
     }
 }
 
-public class TeamMember {
-    String name;
-    String profileImgUrl;
-    String role;
-
-    // Constructor and getters
-    public TeamMember(String name, String profileImgUrl, String role) {
-        this.name = name;
-        this.profileImgUrl = profileImgUrl;
-        this.role = role;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getProfileImgUrl() {
-        return profileImgUrl;
-    }
-
-    public String getRole() {
-        return role;
-    }
-}

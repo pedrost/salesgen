@@ -1,5 +1,6 @@
 package co.boldtec.salesgen.services;
 
+import org.apache.poi.sl.usermodel.PaintStyle;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFShape;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
@@ -30,7 +31,29 @@ public class PptxService implements IPowerPointService {
                 if (shape instanceof XSLFTextShape textShape) {
                     String text = textShape.getText();
                     if (text != null && text.contains(placeholder)) {
-                        textShape.setText(text.replace(placeholder, replacementText));
+                        for (var paragraph : textShape.getTextParagraphs()) {
+                            for (var run : paragraph.getTextRuns()) {
+                                if (run.getRawText().contains(placeholder)) {
+                                    // Copy font and other style attributes
+                                    String originalFontFamily = run.getFontFamily();
+                                    double originalFontSize = run.getFontSize();
+                                    boolean isBold = run.isBold();
+                                    boolean isItalic = run.isItalic();
+                                    PaintStyle originalColor = run.getFontColor();
+
+                                    // Replace the text
+                                    String newText = run.getRawText().replace(placeholder, replacementText);
+                                    run.setText(newText);
+
+                                    // Restore the font and style attributes
+                                    run.setFontFamily(originalFontFamily);
+                                    run.setFontSize(originalFontSize);
+                                    run.setBold(isBold);
+                                    run.setItalic(isItalic);
+                                    run.setFontColor(originalColor);
+                                }
+                            }
+                        }
                     }
                 }
             }
