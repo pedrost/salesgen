@@ -14,7 +14,6 @@ public class PptxService implements IPowerPointService {
 
     private XMLSlideShow presentation;
 
-    // Load a presentation file
     public PptxService GetPresentation(String filePath) {
         try (FileInputStream fis = new FileInputStream(filePath)) {
             this.presentation = new XMLSlideShow(fis);
@@ -24,7 +23,6 @@ public class PptxService implements IPowerPointService {
         return this;
     }
 
-    // Replace text in a slide
     public PptxService ReplaceText(String placeholder, String replacementText) {
         for (var slide : presentation.getSlides()) {
             for (XSLFShape shape : slide.getShapes()) {
@@ -34,18 +32,15 @@ public class PptxService implements IPowerPointService {
                         for (var paragraph : textShape.getTextParagraphs()) {
                             for (var run : paragraph.getTextRuns()) {
                                 if (run.getRawText().contains(placeholder)) {
-                                    // Copy font and other style attributes
                                     String originalFontFamily = run.getFontFamily();
                                     double originalFontSize = run.getFontSize();
                                     boolean isBold = run.isBold();
                                     boolean isItalic = run.isItalic();
                                     PaintStyle originalColor = run.getFontColor();
 
-                                    // Replace the text
                                     String newText = run.getRawText().replace(placeholder, replacementText);
                                     run.setText(newText);
 
-                                    // Restore the font and style attributes
                                     run.setFontFamily(originalFontFamily);
                                     run.setFontSize(originalFontSize);
                                     run.setBold(isBold);
@@ -61,7 +56,6 @@ public class PptxService implements IPowerPointService {
         return this;
     }
 
-    // Save the updated presentation
     public void SaveAs(String outputFilePath) {
         try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
             presentation.write(fos);

@@ -1,5 +1,8 @@
 package co.boldtec.salesgen.domain;
 
+import lombok.Data;
+
+@Data
 public class Problem {
     String name;
     String description;
@@ -8,13 +11,5 @@ public class Problem {
     public Problem(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

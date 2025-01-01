@@ -1,4 +1,6 @@
-package co.boldtec.salesgen.domain;
+package co.boldtec.salesgen.domain.interfaces;
+
+import co.boldtec.salesgen.domain.*;
 
 import java.util.List;
 

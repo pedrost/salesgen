@@ -1,6 +1,6 @@
 package co.boldtec.salesgen.usecases;
 
-import co.boldtec.salesgen.domain.IStartupPptxRequest;
+import co.boldtec.salesgen.domain.interfaces.IStartupPptxRequest;
 import co.boldtec.salesgen.domain.TeamMember;
 import co.boldtec.salesgen.domain.Problem;
 import co.boldtec.salesgen.domain.Feature;
@@ -14,6 +14,7 @@ public class StartupPptxUsecase {
     }
 
     public void createStartupPresentation(IStartupPptxRequest request) {
+
         pptxService.GetPresentation("src/main/resources/pptx/Style1.pptx")
                 .ReplaceText("{{company_name}}", request.getCompanyName())
                 .ReplaceText("{{company_email}}", request.getCompanyEmail())
@@ -42,5 +43,7 @@ public class StartupPptxUsecase {
                     .ReplaceText("{{team_" + (i + 1) + "_profile_img_url}}", member.getProfileImgUrl());
         }
 
+
+        pptxService.SaveAs("src/main/resources/pptx/Style2.pptx");
     }
 }
