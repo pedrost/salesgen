@@ -1,50 +1,73 @@
 package co.boldtec.salesgen.infra.http;
 
-import co.boldtec.salesgen.domain.Message;
 import co.boldtec.salesgen.domain.interfaces.IOpenAIClient;
 import co.boldtec.salesgen.domain.requests.OpenAiPromptRequest;
-import io.github.lambdua.service.OpenAiService;  // Updated import
-import io.github.lambdua.service.completion.chat.ChatMessage;  // Updated import
-import io.github.lambdua.service.completion.chat.ChatCompletionRequest;  // Updated import
-import io.github.lambdua.service.completion.chat.ChatCompletionResult;  // Updated import
+import co.boldtec.salesgen.services.IConfigService;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.time.Duration;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OpenAIClientImpl implements IOpenAIClient {
-    private final OpenAiService service;
+    private final String apiKey;
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
+    private static final String GPT_VERSION = "gpt-4o-mini";
+    private static final int MAX_TOKENS = 2000;
 
-    public OpenAIClientImpl() {
-        this.service = new OpenAiService(Duration.ofSeconds(30));  // Adjusted to match new dependency usage
+    private final OkHttpClient client;
+
+    public OpenAIClientImpl(IConfigService configService) {
+        this.apiKey = configService.getConfigValue("OPENAI_API_KEY");
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .build();
     }
 
     @Override
     public String sendPrompt(List<OpenAiPromptRequest> messageHistory) {
-        List<ChatMessage> messageList = new ArrayList<>();
+        JSONArray messages = new JSONArray();
 
-        // Convert history to ChatMessage format
-        messageHistory.forEach(chatMessage -> {
-            messageList.add(new ChatMessage(chatMessage.getRole(), chatMessage.getContent()));
-        });
+        for (OpenAiPromptRequest msg : messageHistory) {
+            JSONObject message = new JSONObject();
+            message.put("role", msg.getRole());
+            message.put("content", msg.getContent());
+            messages.put(message);
+        }
 
-        // Create a ChatCompletionRequest
-        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-                .model("gpt-4")  // Specify model
-                .messages(messageList)
-                .maxTokens(100)  // Define max token limit
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("model", GPT_VERSION);
+        jsonBody.put("messages", messages);
+        jsonBody.put("max_tokens", MAX_TOKENS);
+
+        // Build the request
+        RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
 
-        // Request a completion
-        ChatCompletionResult chatCompletionResult = service.createChatCompletion(chatCompletionRequest);
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                return "Error: Request failed with status " + response.code();
+            }
 
-        // Extract and return the response
-        if (chatCompletionResult.getChoices() != null && !chatCompletionResult.getChoices().isEmpty()) {
-            String responseContent = chatCompletionResult.getChoices().get(0).getMessage().getContent();
-            System.out.println(responseContent);
-            return responseContent;
-        } else {
-            return "Error: No response from model";
+            String responseBody = response.body().string();
+            JSONObject responseJson = new JSONObject(responseBody);
+
+            if (responseJson.has("choices") && !responseJson.getJSONArray("choices").isEmpty()) {
+                JSONObject choice = responseJson.getJSONArray("choices").getJSONObject(0);
+                return choice.getJSONObject("message").getString("content");
+            } else {
+                return "Error: No response from model";
+            }
+        } catch (IOException e) {
+            return "Error: " + e.getMessage();
         }
     }
 }

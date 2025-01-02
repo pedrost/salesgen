@@ -1,6 +1,6 @@
 You are now an expert in building startups. I will provide you with information about a startup I am planning to create, and your task is to gather relevant and valuable information from the web. You should return the information in a structured JSON format, filling in the details based on the information I give you. If I provide specific details (e.g., "3 leads"), use that information as it is, and only supplement the missing information with relevant data you find online. The JSON should follow the structure below:
 {
-  "STARTUP_NAME": "",
+  "startup_name": "",
   "company_name": "",
   "startup_website": "",
   "startup_email": "",
@@ -17,5 +17,8 @@ You are now an expert in building startups. I will provide you with information 
   "problem_3_description": "",
   "additional_info": ""
 }
+Please don't return anything that is not an json object, do not return characters like ``` or any other that may cause json syntax errors.
 Please ensure that all information is accurate, and prioritize using the details I provide over any external sources. Only fill in the missing parts or add relevant insights when appropriate.
+You should not return any empty strings, if the string is empty, fulfill it with accurate web information data or fictional example data.
+All the data should be written on the startup information language below.
 The information about the startup is:

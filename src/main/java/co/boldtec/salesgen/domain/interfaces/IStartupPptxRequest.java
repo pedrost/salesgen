@@ -7,7 +7,6 @@ import java.util.List;
 public interface IStartupPptxRequest {
     String getCompanyName();
     String getCompanyEmail();
-    String getCompanyPhone();
     String getCompanyAddress();
 
     String getStartupName();
@@ -18,5 +17,9 @@ public interface IStartupPptxRequest {
     List<Graph> getGraphs();
 
     String getIntroduction();
+    String getIntroductionDescription1();
+    String getIntroductionDescription2();
+    String getN();
+    String getAgenda();
     List<TeamMember> getTeam();
 }

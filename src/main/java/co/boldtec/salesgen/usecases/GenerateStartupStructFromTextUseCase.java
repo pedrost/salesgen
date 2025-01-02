@@ -4,7 +4,6 @@ import co.boldtec.salesgen.domain.interfaces.IOpenAIClient;
 import co.boldtec.salesgen.domain.requests.OpenAiPromptRequest;
 import co.boldtec.salesgen.domain.requests.StartupPptxRequest;
 import co.boldtec.salesgen.domain.interfaces.IStartupPptxRequest;
-import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -13,9 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class GenerateStartupStructFromTextUseCase {
-
     private final IOpenAIClient openAIClient;
     private final ObjectMapper objectMapper;
 
@@ -33,10 +30,9 @@ public class GenerateStartupStructFromTextUseCase {
         String response = openAIClient.sendPrompt(messages);
 
         try {
-
             return objectMapper.readValue(response, StartupPptxRequest.class);
         } catch (IOException e) {
-            log.error("Error parsing JSON response into StartupPptxRequest: {}", e.getMessage(), e);
+            System.out.printf("Error parsing JSON response into StartupPptxRequest: %s \n", e.getMessage());
             return null;
         }
     }
@@ -46,7 +42,7 @@ public class GenerateStartupStructFromTextUseCase {
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
-            log.error("Error reading file at {}: {}", filePath, e.getMessage(), e);
+            System.out.printf("Error reading file at %s: %s", filePath, e.getMessage());
             return null;
         }
     }
