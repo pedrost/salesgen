@@ -1,6 +1,6 @@
 package co.boldtec.salesgen.infra.controllers;
 
-import co.boldtec.salesgen.config.DotenvConfig;
+import co.boldtec.salesgen.services.ConfigService;
 import co.boldtec.salesgen.domain.interfaces.IOpenAIClient;
 import co.boldtec.salesgen.domain.interfaces.IStartupPptxRequest;
 import co.boldtec.salesgen.domain.requests.StartupIdeaRequest;
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,13 @@ import org.springframework.validation.annotation.Validated;
 
 @RestController
 public class PptxController {
+
+    private final IConfigService cfgService;
+
+    @Autowired
+    public PptxController(IConfigService cfgService) {
+        this.cfgService = cfgService;
+    }
 
     /**
      * Endpoint to generate a PowerPoint presentation from a startup idea.
@@ -51,14 +59,13 @@ public class PptxController {
 
         String startupIdea = request.getData();
 
-        IConfigService cfgService = new DotenvConfig();
         IOpenAIClient openAIClient = new OpenAIClientImpl(cfgService);
 
         GenerateStartupStructFromTextUseCase generator = new GenerateStartupStructFromTextUseCase(openAIClient);
         IStartupPptxRequest pptxData = generator.generatePptxDataFromText(startupIdea);
 
-        IPowerPointService serviceIpm = new PptxService();
-        StartupPptxUsecase startupPptxUsecase = new StartupPptxUsecase(serviceIpm);
+        IPowerPointService serviceImpl = new PptxService();
+        StartupPptxUsecase startupPptxUsecase = new StartupPptxUsecase(serviceImpl);
         startupPptxUsecase.createStartupPresentation(pptxData);
 
         return "PowerPoint created successfully!";

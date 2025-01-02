@@ -20,7 +20,7 @@ public class OpenAIClientImpl implements IOpenAIClient {
     private final OkHttpClient client;
 
     public OpenAIClientImpl(IConfigService configService) {
-        this.apiKey = configService.getConfigValue("OPENAI_API_KEY");
+        this.apiKey = configService.get("OPENAI_API_KEY");
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS)
