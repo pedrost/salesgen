@@ -23,8 +23,8 @@ public class StartupPptxUsecase {
 
         pptxService.GetPresentation("src/main/resources/pptx/Style1.pptx")
                 .ReplaceText("{{company_name}}", request.getCompanyName())
-                .ReplaceText("{{company_email}}", request.getCompanyEmail())
-                .ReplaceText("{{company_address}}", request.getCompanyAddress())
+                .ReplaceText("{{startup_email}}", request.getStartupEmail())
+                .ReplaceText("{{startup_address}}", request.getStartupAddress())
                 .ReplaceText("{{STARTUP_NAME}}", request.getStartupName())
                 .ReplaceText("{{startup_website}}", request.getStartupWebsite())
                 .ReplaceText("{{introduction}}", request.getIntroduction())

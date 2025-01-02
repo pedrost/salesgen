@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IStartupPptxRequest {
     String getCompanyName();
-    String getCompanyEmail();
-    String getCompanyAddress();
+    String getStartupEmail();
+    String getStartupAddress();
 
     String getStartupName();
     String getStartupWebsite();

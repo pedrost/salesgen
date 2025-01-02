@@ -32,10 +32,10 @@ public class StartupPptxRequest implements IStartupPptxRequest {
     private String startupWebsite;
 
     @JsonProperty("startup_email")
-    private String companyEmail;
+    private String startupEmail;
 
     @JsonProperty("startup_address")
-    private String companyAddress;
+    private String startupAddress;
 
     @JsonProperty("agenda")
     private String agenda;
