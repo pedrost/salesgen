@@ -31,8 +31,8 @@ public class StartupPptxUsecase {
                 .ReplaceText("{{introduction_description_1}}", request.getIntroductionDescription1())
                 .ReplaceText("{{introduction_description_2}}", request.getIntroductionDescription2())
                 .ReplaceText("{{introduction}}", request.getIntroduction())
-                .ReplaceText("{{agenda}}", request.getAgenda())  // Added agenda
-                .ReplaceText("{{n}}", request.getN());// Added n
+                .ReplaceText("{{agenda}}", request.getAgenda())
+                .ReplaceText("{{n}}", request.getN());
 
         // Only replace problems if the list size is greater than 0
         if (request.getProblems() != null && !request.getProblems().isEmpty()) {
@@ -43,7 +43,6 @@ public class StartupPptxUsecase {
             }
         }
 
-        // Only replace features if the list size is greater than 0
         if (request.getFeatures() != null && !request.getFeatures().isEmpty()) {
             for (int i = 0; i < request.getFeatures().size(); i++) {
                 Feature feature = request.getFeatures().get(i);
@@ -52,7 +51,6 @@ public class StartupPptxUsecase {
             }
         }
 
-        // Only replace team members if the list size is greater than 0
         if (request.getTeam() != null && !request.getTeam().isEmpty()) {
             for (int i = 0; i < request.getTeam().size(); i++) {
                 TeamMember member = request.getTeam().get(i);
