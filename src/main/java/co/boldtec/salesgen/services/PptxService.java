@@ -69,11 +69,6 @@ public class PptxService implements IPowerPointService {
                         .map(Double::valueOf)
                         .toArray(Double[]::new);
 
-                // Ensure data integrity
-                if (categories.length != values.length) {
-//                    throw new IllegalArgumentException("Mismatch between categories and values.");
-                }
-
                 // Create data sources
                 XDDFCategoryDataSource categoryData = XDDFDataSourcesFactory.fromArray(categories);
                 XDDFNumericalDataSource<Double> valueData = XDDFDataSourcesFactory.fromArray(values);
