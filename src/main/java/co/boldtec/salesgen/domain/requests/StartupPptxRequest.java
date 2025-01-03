@@ -37,12 +37,6 @@ public class StartupPptxRequest implements IStartupPptxRequest {
     @JsonProperty("startup_address")
     private String startupAddress;
 
-    @JsonProperty("agenda")
-    private String agenda;
-
-    @JsonProperty("n")
-    private String n;
-
     @JsonProperty("introduction_description_1")
     private String introductionDescription1;
 
@@ -72,7 +66,9 @@ public class StartupPptxRequest implements IStartupPptxRequest {
 
     private List<Problem> problems;
     private List<Feature> features;
-    private List<Graph> graphs;
+
+    @JsonProperty("graphs")
+    private List<Graph> graphs = new ArrayList<>();
 
     private String introduction;
 

@@ -1,17 +1,26 @@
 package co.boldtec.salesgen.domain;
 
-import lombok.Data;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import java.util.Map;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Graph {
-    String name;
-    List<Double> x;
-    List<Double> y;
+    private String title;
+    private String description;
+    private Map<Integer, Integer> data;
 
-    public Graph(String name, List<Double> x, List<Double> y) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
+    @JsonCreator
+    public Graph(
+            @JsonProperty("title") String title,
+            @JsonProperty("description") String description,
+            @JsonProperty("data") Map<Integer, Integer> data) {
+        this.title = title;
+        this.description = description;
+        this.data = data;
     }
 }

@@ -1,11 +1,14 @@
 package co.boldtec.salesgen.usecases;
 
+import co.boldtec.salesgen.domain.Graph;
 import co.boldtec.salesgen.domain.interfaces.IStartupPptxRequest;
 import co.boldtec.salesgen.domain.TeamMember;
 import co.boldtec.salesgen.domain.Problem;
 import co.boldtec.salesgen.domain.Feature;
 import co.boldtec.salesgen.domain.requests.StartupPptxRequest;
 import co.boldtec.salesgen.services.IPowerPointService;
+
+import java.util.List;
 
 public class StartupPptxUsecase {
     private final IPowerPointService pptxService;
@@ -15,26 +18,21 @@ public class StartupPptxUsecase {
     }
 
     public void createStartupPresentation(IStartupPptxRequest request) {
+        List<Graph> graphs = request.getGraphs();
+        ((StartupPptxRequest) request).populateLists();
 
-        if (request instanceof StartupPptxRequest) {
-            StartupPptxRequest pptxRequest = (StartupPptxRequest) request;
-            pptxRequest.populateLists();
-        }
-
-        pptxService.GetPresentation("src/main/resources/pptx/Style1.pptx")
-                .ReplaceText("{{company_name}}", request.getCompanyName())
+        pptxService.GetPresentation("src/main/resources/pptx/PitchDeckDefaultPPTX.pptx")
+                .AddGraphsToPresentation(graphs)
                 .ReplaceText("{{startup_email}}", request.getStartupEmail())
                 .ReplaceText("{{startup_address}}", request.getStartupAddress())
-                .ReplaceText("{{STARTUP_NAME}}", request.getStartupName())
+                .ReplaceText("{{startup_name}}", request.getStartupName())
+                .ReplaceText("{{company_name}}", request.getCompanyName())
                 .ReplaceText("{{startup_website}}", request.getStartupWebsite())
                 .ReplaceText("{{introduction}}", request.getIntroduction())
                 .ReplaceText("{{introduction_description_1}}", request.getIntroductionDescription1())
                 .ReplaceText("{{introduction_description_2}}", request.getIntroductionDescription2())
-                .ReplaceText("{{introduction}}", request.getIntroduction())
-                .ReplaceText("{{agenda}}", request.getAgenda())
-                .ReplaceText("{{n}}", request.getN());
+                .ReplaceText("{{introduction}}", request.getIntroduction());
 
-        // Only replace problems if the list size is greater than 0
         if (request.getProblems() != null && !request.getProblems().isEmpty()) {
             for (int i = 0; i < request.getProblems().size(); i++) {
                 Problem problem = request.getProblems().get(i);

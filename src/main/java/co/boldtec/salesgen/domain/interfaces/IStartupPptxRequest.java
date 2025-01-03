@@ -5,11 +5,11 @@ import co.boldtec.salesgen.domain.*;
 import java.util.List;
 
 public interface IStartupPptxRequest {
-    String getCompanyName();
     String getStartupEmail();
     String getStartupAddress();
 
     String getStartupName();
+    String getCompanyName();
     String getStartupWebsite();
 
     List<Problem> getProblems();
@@ -19,7 +19,5 @@ public interface IStartupPptxRequest {
     String getIntroduction();
     String getIntroductionDescription1();
     String getIntroductionDescription2();
-    String getN();
-    String getAgenda();
     List<TeamMember> getTeam();
 }
